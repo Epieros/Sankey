@@ -10,14 +10,45 @@
   </head>
   <body>
     <script type='text/javascript'>
+	 var some_data = [
+		  {"computer_name":"Computer.1","scan_date":"2016-09-17","malwares_found":21,"malwares_quarantined":1},
+		  {"computer_name":"Computer.2","scan_date":"2016-09-17","error_code":"SCAN_ERROR"},
+		  {"computer_name":"Computer.3","scan_date":"2016-09-18","malwares_found":0,"malwares_quarantined":0},
+		  {"computer_name":"Computer.4","scan_date":"2016-09-18","malwares_found":3,"malwares_quarantined":1},
+		  {"computer_name":"Computer.5","scan_date":"2016-09-19","error_code":"SCAN_ERROR"},
+		  {"computer_name":"Computer.6","scan_date":"2016-09-19","error_code":"SCAN_ERROR"},
+		  {"computer_name":"Computer.7","scan_date":"2016-09-17","malwares_found":0,"malwares_quarantined":0},
+		  {"computer_name":"Computer.8","scan_date":"2016-09-17","malwares_found":14,"malwares_quarantined":9},
+		  {"computer_name":"Computer.9","scan_date":"2016-09-17","error_code":"SCAN_ERROR"},
+		  {"computer_name":"Computer.10","scan_date":"2016-09-17","malwares_found":3,"malwares_quarantined":3},
+		  {"computer_name":"Computer.12","scan_date":"2016-09-17","malwares_found":26,"malwares_quarantined":14},
+		  {"computer_name":"Computer.9","scan_date":"2016-09-18","error_code":"SCAN_ERROR"},
+		  {"computer_name":"Computer.10","scan_date":"2016-09-18","malwares_found":3,"malwares_quarantined":3},
+		  {"computer_name":"Computer.11","scan_date":"2016-09-18","malwares_found":26,"malwares_quarantined":14}
+        ];
+	
+	console.log(some_data);
+	    
       $(document).ready(function() {
         var sankey = new Sankey();
       
-        sankey.stack(0,["Top","Bottom"]);
-        sankey.stack(1,["Merge"]);
-        sankey.stack(2,["Good","Bad"]);
-      
-        sankey.setData([["Top",100,"Merge"],["Bottom",50,"Merge"],["Merge",70,"Good"],["Merge",80,"Bad"]]);
+        sankey.stack(0,["Compromised1","Cleaned1","Failed1","Disconnected1","Clean1"]);
+        sankey.stack(1,["Compromised2","Cleaned2","Failed2","Disconnected2","Clean2"]);
+        sankey.stack(2,["Compromised3","Cleaned3","Failed3","Disconnected3","Clean3"]);
+
+        sankey.setData([["Clean1",1,"Clean2"],["Clean1",2,"Cleaned2"],["Clean1",7,"Failed2"],["Clean1",8,"Compromised2"],["Clean1",8,"Disconnected2"],
+          ["Cleaned1",1,"Clean2"],["Cleaned1",2,"Cleaned2"],["Cleaned1",7,"Failed2"],["Cleaned1",8,"Compromised2"],["Cleaned1",8,"Disconnected2"],
+          ["Failed1",1,"Clean2"],["Failed1",2,"Cleaned2"],["Failed1",7,"Failed2"],["Failed1",8,"Compromised2"],["Failed1",8,"Disconnected2"],
+          ["Disconnected1",1,"Clean2"],["Disconnected1",2,"Cleaned2"],["Disconnected1",7,"Failed2"],["Disconnected1",8,"Compromised2"],["Disconnected1",8,"Disconnected2"],
+          ["Compromised1",1,"Clean2"],["Compromised1",2,"Cleaned2"],["Compromised1",7,"Failed2"],["Compromised1",8,"Compromised2"],["Compromised1",8,"Disconnected2"],
+
+          ["Clean2",5,"Clean3"],
+          ["Cleaned2",10,"Clean3"],
+          ["Failed2",30,"Clean3"],["Failed2",2,"Cleaned3"],["Failed2",3,"Compromised3"],
+          ["Disconnected2",35,"Clean3"],["Disconnected2",2,"Cleaned3"],["Disconnected2",1,"Failed3"],["Disconnected2",1,"Compromised3"],["Disconnected2",1,"Disconnected3"],
+          ["Compromised2",7,"Failed3"],["Compromised2",8,"Compromised3"],["Compromised2",25,"Disconnected3"]
+          ]);
+	      
         sankey.draw();
     });
       
