@@ -84,7 +84,8 @@
 
 					if (index >= 0) {
 						if (data_set[index].malwares_found == 0) {state = "Clean"}
-						if (data_set[index].malwares_found == data_set[index].malwares_quarantined) {state = "Cleaned"}
+           					if (data_set[index].malwares_found != 0 && 
+								data_set[index].malwares_found == data_set[index].malwares_quarantined) {state = "Cleaned"}
 						if (data_set[index].malwares_found > data_set[index].malwares_quarantined) {state = "Compromised"}
 						if (data_set[index].error_code == "SCAN_ERROR") {state = "Failed"}
 
@@ -110,6 +111,24 @@
 			return result_states;
 		}; //end set_state function
 
+		// summarize counts by state by day
+		// summary will be used to populate sankey.setData
+		function count_states(data_set) {
+			var computer_count = 0, found_count = 0, quar_count = 0;
+			var test = d3.nest()
+				.key(function(d) {return d.scan_date;})
+				.key(function(d) {return d.scan_state;})
+				.rollup(function(d) {return {"malwares_found": d.malwares_found,
+											"malwares_quarantined": d.malwares_quarantined,
+											"computer_count": 1
+											} 
+									} // end function
+					   ) //end rollup
+				.entries(data_set);
+			return test;
+		} //end count_states function
+
+		console.log(count_states(state_set));
 	    
       $(document).ready(function() {
         var sankey = new Sankey();
