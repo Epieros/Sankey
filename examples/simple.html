@@ -3,6 +3,7 @@
   <head>
     <meta content='text/html; charset=utf-8' http-equiv='Content-Type' />  
     <title>Sankey Javascript Demo: Spread effort 2050 Pathway</title>
+	<script src="https://d3js.org/d3.v4.min.js"></script>
     <script src="../ext/raphael.js" type="text/javascript"></script>
     <script src="../ext/jquery.js" type="text/javascript"></script>
     <script src="../js/sankey.js" type="text/javascript"></script>    
@@ -30,10 +31,12 @@
 		var date_set = set_dates(some_data);
 		var name_set = set_names(some_data);
 		var state_set = set_state(some_data, date_set, name_set);
+		var summary_set = count_state(state_set);
 
 		console.log(date_set);
 		console.log(name_set);
 		console.log(state_set);
+		console.log(count_states(state_set));
 
 		// set of unique dates in data set
 		function set_dates(data_set) {
@@ -114,14 +117,13 @@
 		// summarize counts by state by day
 		// summary will be used to populate sankey.setData
 		function count_states(data_set) {
-			var computer_count = 0, found_count = 0, quar_count = 0;
 			var test = d3.nest()
 				.key(function(d) {return d.scan_date;})
 				.key(function(d) {return d.scan_state;})
-				.rollup(function(d) {return {"malwares_found": d.malwares_found,
-											"malwares_quarantined": d.malwares_quarantined,
-											"computer_count": 1
-											} 
+				.rollup(function(values) {return {"malwares_found": d3.sum(values, function(d) {return +d.malwares_found}),
+                                          "malwares_quarantined": d3.sum(values, function(d) {return +d.malwares_quarantined}),
+                                          "computer_count": d3.sum(values, function(d) {return 1})
+											}
 									} // end function
 					   ) //end rollup
 				.entries(data_set);
