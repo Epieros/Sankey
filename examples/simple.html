@@ -10,24 +10,106 @@
   </head>
   <body>
     <script type='text/javascript'>
-	 var some_data = [
-		  {"computer_name":"Computer.1","scan_date":"2016-09-17","malwares_found":21,"malwares_quarantined":1},
-		  {"computer_name":"Computer.2","scan_date":"2016-09-17","error_code":"SCAN_ERROR"},
-		  {"computer_name":"Computer.3","scan_date":"2016-09-18","malwares_found":0,"malwares_quarantined":0},
-		  {"computer_name":"Computer.4","scan_date":"2016-09-18","malwares_found":3,"malwares_quarantined":1},
-		  {"computer_name":"Computer.5","scan_date":"2016-09-19","error_code":"SCAN_ERROR"},
-		  {"computer_name":"Computer.6","scan_date":"2016-09-19","error_code":"SCAN_ERROR"},
-		  {"computer_name":"Computer.7","scan_date":"2016-09-17","malwares_found":0,"malwares_quarantined":0},
-		  {"computer_name":"Computer.8","scan_date":"2016-09-17","malwares_found":14,"malwares_quarantined":9},
-		  {"computer_name":"Computer.9","scan_date":"2016-09-17","error_code":"SCAN_ERROR"},
-		  {"computer_name":"Computer.10","scan_date":"2016-09-17","malwares_found":3,"malwares_quarantined":3},
-		  {"computer_name":"Computer.12","scan_date":"2016-09-17","malwares_found":26,"malwares_quarantined":14},
-		  {"computer_name":"Computer.9","scan_date":"2016-09-18","error_code":"SCAN_ERROR"},
-		  {"computer_name":"Computer.10","scan_date":"2016-09-18","malwares_found":3,"malwares_quarantined":3},
-		  {"computer_name":"Computer.11","scan_date":"2016-09-18","malwares_found":26,"malwares_quarantined":14}
-        ];
+		var some_data = [
+			{"computer_name":"Computer.1","scan_date":"2016-09-17","malwares_found":21,"malwares_quarantined":1},
+			{"computer_name":"Computer.2","scan_date":"2016-09-17","error_code":"SCAN_ERROR"},
+			{"computer_name":"Computer.3","scan_date":"2016-09-18","malwares_found":0,"malwares_quarantined":0},
+			{"computer_name":"Computer.4","scan_date":"2016-09-18","malwares_found":3,"malwares_quarantined":1},
+			{"computer_name":"Computer.5","scan_date":"2016-09-19","error_code":"SCAN_ERROR"},
+			{"computer_name":"Computer.6","scan_date":"2016-09-19","error_code":"SCAN_ERROR"},
+			{"computer_name":"Computer.7","scan_date":"2016-09-17","malwares_found":0,"malwares_quarantined":0},
+			{"computer_name":"Computer.8","scan_date":"2016-09-17","malwares_found":14,"malwares_quarantined":9},
+			{"computer_name":"Computer.9","scan_date":"2016-09-17","error_code":"SCAN_ERROR"},
+			{"computer_name":"Computer.10","scan_date":"2016-09-17","malwares_found":3,"malwares_quarantined":3},
+			{"computer_name":"Computer.12","scan_date":"2016-09-17","malwares_found":26,"malwares_quarantined":14},
+			{"computer_name":"Computer.9","scan_date":"2016-09-18","error_code":"SCAN_ERROR"},
+			{"computer_name":"Computer.10","scan_date":"2016-09-18","malwares_found":3,"malwares_quarantined":3},
+			{"computer_name":"Computer.11","scan_date":"2016-09-18","malwares_found":26,"malwares_quarantined":14}
+		];
 	
-	console.log(some_data);
+		var date_set = set_dates(some_data);
+		var name_set = set_names(some_data);
+		var state_set = set_state(some_data, date_set, name_set);
+
+		console.log(date_set);
+		console.log(name_set);
+		console.log(state_set);
+
+		// set of unique dates in data set
+		function set_dates(data_set) {
+			var result_dates = [], prev;
+			var dateLen = data_set.length;
+			data_set.sort(function (a,b){
+				return new Date(a.scan_date) - new Date(b.scan_date);
+			});
+			for (i = 0; i < dateLen; i++) {
+				if (data_set[i].scan_date != prev) {
+					result_dates.push(data_set[i].scan_date);
+				}
+			prev = data_set[i].scan_date;
+			}
+			return result_dates
+		};
+
+		// set of unique computer names in data set
+		function set_names(data_set) {
+			var result_names = [], prev;
+			var nameLen = data_set.length;
+			data_set.sort(function (a,b){
+				if(a.computer_name < b.computer_name) return -1;
+				if(a.computer_name > b.computer_name) return 1;
+				return 0;
+			});
+			for (i = 0; i < nameLen; i++) {
+				if (data_set[i].computer_name != prev) {
+					result_names.push(data_set[i].computer_name);
+				}
+				prev = data_set[i].computer_name;
+			}
+			return result_names
+		};
+
+		// set the state for each computer_name in name_set, for each scan_date in date_set.
+		// states will be used to populate the sankey.stack and sankey.setData
+		function set_state(data_set, dates, names) {
+			var result_states = []
+			var dateLen = dates.length, nameLen = names.length;
+			var index = 0;
+			var state = "";
+			for (i = 0; i < dateLen; i++) {
+				for (j = 0; j < nameLen; j++) {
+					index = data_set.findIndex(function (element){
+						return element.scan_date === dates[i] && element.computer_name === names[j];
+					});
+
+					if (index >= 0) {
+						if (data_set[index].malwares_found == 0) {state = "Clean"}
+						if (data_set[index].malwares_found == data_set[index].malwares_quarantined) {state = "Cleaned"}
+						if (data_set[index].malwares_found > data_set[index].malwares_quarantined) {state = "Compromised"}
+						if (data_set[index].error_code == "SCAN_ERROR") {state = "Failed"}
+
+						result_states.push({scan_date:dates[i],
+											computer_name:names[j],
+											scan_state: state,
+											malwares_found: data_set[index].malwares_found,
+											malwares_quarantined: data_set[index].malwares_quarantined
+											});
+					} //end of if index >= 0 
+
+					else {
+						state = "Disconnected";
+						result_states.push({scan_date:dates[i],
+											computer_name:names[j],
+											scan_state: state,
+											malwares_found: undefined,
+											malwares_quarantined: undefined
+											});
+					} //end else
+				} //end for j
+			} //end for i
+			return result_states;
+		}; //end set_state function
+
 	    
       $(document).ready(function() {
         var sankey = new Sankey();
