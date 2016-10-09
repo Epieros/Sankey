@@ -19,9 +19,9 @@ Licence: MIT Open Source licence http://www.opensource.org/licenses/mit-license.
       this.r = Raphael(this.display_in_element, this.display_width, this.display_height);
       this.left_margin = 100;
       this.right_margin = 100;
-      this.y_space = 10;
+      this.y_space = 30;
       this.threshold_for_drawing = 0;
-      this.box_width = 50;
+      this.box_width = 25;
       this.flow_edge_width = 2;
       this.flow_curve = 0.25;
       this.boxes = {};
@@ -55,7 +55,7 @@ Licence: MIT Open Source licence http://www.opensource.org/licenses/mit-license.
       if (datum[0] === 0) {
         return;
       }
-      new_line = new FlowLine(this, datum[0], datum[1], datum[2]);
+      new_line = new FlowLine(this, datum[0], datum[1], datum[2], datum[3]);
       this.lines[this.lineName(datum[0], datum[2])] = new_line;
       return this.line_array.push(new_line);
     };
@@ -289,12 +289,12 @@ Licence: MIT Open Source licence http://www.opensource.org/licenses/mit-license.
   })();
 
   FlowLine = (function() {
-    function FlowLine(sankey, left_box_name, flow, right_box_name) {
+    function FlowLine(sankey, left_box_name, flow, right_box_name, colour) {
       this.sankey = sankey;
       this.hover_stop = __bind(this.hover_stop, this);
       this.hover_start = __bind(this.hover_start, this);
       this.setFlow(flow);
-      this.colour = void 0;
+      this.colour = colour;//void 0;
       this.ox = 0;
       this.oy = 0;
       this.dx = 0;
