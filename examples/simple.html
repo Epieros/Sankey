@@ -28,15 +28,16 @@
 			{"computer_name":"Computer.11","scan_date":"2016-09-18","malwares_found":26,"malwares_quarantined":14}
 		];
 	
+    	var label_set = ["Compromised","Cleaned","Failed","Disconnected","Clean"]
 		var date_set = set_dates(some_data);
 		var name_set = set_names(some_data);
 		var state_set = set_state(some_data, date_set, name_set);
-		var summary_set = count_state(state_set);
+    	var summary_set = count_states(state_set);
 
-		console.log(date_set);
-		console.log(name_set);
-		console.log(state_set);
-		console.log(count_states(state_set));
+		//console.log(date_set);
+		//console.log(name_set);
+		//console.log(state_set);
+		//console.log(summary_set);
 
 		// set of unique dates in data set
 		function set_dates(data_set) {
@@ -87,8 +88,8 @@
 
 					if (index >= 0) {
 						if (data_set[index].malwares_found == 0) {state = "Clean"}
-           					if (data_set[index].malwares_found != 0 && 
-								data_set[index].malwares_found == data_set[index].malwares_quarantined) {state = "Cleaned"}
+						if (data_set[index].malwares_found != 0 && 
+							data_set[index].malwares_found == data_set[index].malwares_quarantined) {state = "Cleaned"}
 						if (data_set[index].malwares_found > data_set[index].malwares_quarantined) {state = "Compromised"}
 						if (data_set[index].error_code == "SCAN_ERROR") {state = "Failed"}
 
@@ -130,14 +131,20 @@
 			return test;
 		} //end count_states function
 
-		console.log(count_states(state_set));
 	    
       $(document).ready(function() {
         var sankey = new Sankey();
       
-        sankey.stack(0,["Compromised1","Cleaned1","Failed1","Disconnected1","Clean1"]);
-        sankey.stack(1,["Compromised2","Cleaned2","Failed2","Disconnected2","Clean2"]);
-        sankey.stack(2,["Compromised3","Cleaned3","Failed3","Disconnected3","Clean3"]);
+        var labels = [];
+        var dateLen = date_set.length;
+        var labelLen = label_set.length;
+        
+        for (i=0; i<dateLen; i++) {
+          for (j=0; j<labelLen; j++) {
+            labels[j] = label_set[j]+[i]; 
+          }
+          sankey.stack([i],labels);
+        }
 
         sankey.setData([["Clean1",1,"Clean2"],["Clean1",2,"Cleaned2"],["Clean1",7,"Failed2"],["Clean1",8,"Compromised2"],["Clean1",8,"Disconnected2"],
           ["Cleaned1",1,"Clean2"],["Cleaned1",2,"Cleaned2"],["Cleaned1",7,"Failed2"],["Cleaned1",8,"Compromised2"],["Cleaned1",8,"Disconnected2"],
