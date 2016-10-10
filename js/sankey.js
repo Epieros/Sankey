@@ -17,11 +17,11 @@ Licence: MIT Open Source licence http://www.opensource.org/licenses/mit-license.
       this.display_width = $("#" + this.display_in_element).width();
       this.display_height = $("#" + this.display_in_element).height();
       this.r = Raphael(this.display_in_element, this.display_width, this.display_height);
-      this.left_margin = 100;
-      this.right_margin = 100;
+      this.left_margin = 75;
+      this.right_margin = 75;
       this.y_space = 30;
       this.threshold_for_drawing = 0;
-      this.box_width = 25;
+      this.box_width = 75;
       this.flow_edge_width = 2;
       this.flow_curve = 0.25;
       this.boxes = {};
@@ -572,12 +572,16 @@ Licence: MIT Open Source licence http://www.opensource.org/licenses/mit-license.
 
     TransformationBox.prototype.labelPositionX = function() {
       if (this.is_left_box()) {
-        return this.x - 3.0;
+        return this.x + this.sankey.box_width - 3.0;
       }
       if (this.is_right_box()) {
-        return this.x + this.sankey.box_width + 3.0;
+        return this.x + /*this.sankey.box_width*/ + 3.0;
       }
       return this.x + (this.sankey.box_width / 2);
+    };
+
+    TransformationBox.prototype.labelPositionY = function() {
+      return this.y + (this.size() / 2);
     };
 
     TransformationBox.prototype.labelPositionY = function() {
