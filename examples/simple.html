@@ -20,8 +20,8 @@
     var label_set = ["Compromised","Cleaned","Clean","Disconnected","Failed"]
     var date_set = set_dates(some_data);
     var name_set = set_names(some_data);
-    var tranistion_set = set_state(some_data, date_set, name_set);
-
+    var tranistion_set = set_state(some_data, date_set, name_set,30);
+    
 //	console.log(date_set);
 //	console.log(name_set);
 //	console.log(tranistion_set);
@@ -31,7 +31,6 @@
         var labels;
         var dateLen = date_set.length;
         var labelLen = label_set.length;
-
         for (i=0; i<dateLen; i++) {
 	    labels = [];
 	    for (j=0; j<labelLen; j++) {
@@ -39,7 +38,7 @@
 	    } //end of for j
 	    sankey.stack([i],labels);
         } //end of for i
-
+        
 sankey.setData([
   tranistion_set[0],tranistion_set[1],tranistion_set[2],tranistion_set[3],tranistion_set[4],tranistion_set[5],tranistion_set[6],tranistion_set[7],tranistion_set[8],tranistion_set[9],tranistion_set[10],
   tranistion_set[11],tranistion_set[12],tranistion_set[13],tranistion_set[14],tranistion_set[15],tranistion_set[16],tranistion_set[17],tranistion_set[18],tranistion_set[19],tranistion_set[20],
@@ -57,11 +56,10 @@ sankey.setData([
         sankey.draw();
   //      console.log(sankey.lines);
     });
-
     </script>
-    <h1 style='width:1000px; text-align: center; margin-bottom: 0'>A very simple Sankey Diagram</h1>
-    <div style='width:1000px; text-align: center; margin-top: 0'>Move your mouse over the diagram to show values</div>
-    <div id='sankey' style="width:2000px;height:1400px">
+    <h1 style='width:1400px; text-align: center; margin-bottom: 0'>Sample Network State Change</h1>
+    <div style='width:1400px; text-align: center; margin-top: 0'>Move your mouse over the diagram to show values</div>
+    <div id='sankey' style="width:1400px;height:1000px">
       &nbsp;
     </div>
   </body>
