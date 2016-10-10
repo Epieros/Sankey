@@ -311,7 +311,7 @@ Licence: MIT Open Source licence http://www.opensource.org/licenses/mit-license.
     };
 
     FlowLine.prototype.labelText = function() {
-      return this.sankey.convert_flow_labels_callback(this.flow);
+      return this.sankey.convert_flow_labels_callback(Math.round(this.flow/.30));
     };
 
     FlowLine.prototype.path = function() {
@@ -563,7 +563,7 @@ Licence: MIT Open Source licence http://www.opensource.org/licenses/mit-license.
     };
 
     TransformationBox.prototype.valueLabelText = function() {
-      return this.sankey.convert_box_value_labels_callback(this.flow());
+      return this.sankey.convert_box_value_labels_callback(Math.round(this.flow()/.30));
     };
 
     TransformationBox.prototype.descriptionLabelText = function() {
