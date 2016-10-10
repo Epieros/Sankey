@@ -1,4 +1,3 @@
-
 // set of unique dates in data set
 function set_dates(data_set) {
   var result_dates = [], prev;
@@ -35,7 +34,7 @@ function set_names(data_set) {
 
 // set the state for each computer_name in name_set, for each scan_date in date_set.
 // states will be used to populate the sankey.stack and sankey.setData
-function set_state(data_set, dates, names) {
+function set_state(data_set, dates, names, factor) {
   var result_states = [];
   var transitions = [];
   var sumTransitions = [];
@@ -105,7 +104,7 @@ function set_state(data_set, dates, names) {
           default: "orange"
         }
         transitions.push({prev_state: prev_state,
-                                  computer_count: 1,
+                                  computer_count: 1 * (factor/100),
                                   curr_state: curr_state,
                                   colour: colour
                                 });
