@@ -13,14 +13,16 @@
   <body>
     <script type='text/javascript'>
 
-    var some_data = d3.json("../data/sample_data_adj.json", function(error, json) {
+    //var some_data = d3.json("https://github.com/Epieros/Sankey/blob/master/data/sample_data_adj.json", function(error, json) {
+    var some_data = d3.json("/data/sample_data_adj.json", function(error, json) {
               if (error) return console.warn(error);
               });
 
     var label_set = ["Compromised","Cleaned","Clean","Disconnected","Failed"]
     var date_set = set_dates(some_data);
     var name_set = set_names(some_data);
-    var transition_set = set_state(some_data, date_set, name_set,30);
+    var factor = 30 //reduces output height 30 = 30% of original height	    
+    var transition_set = set_state(some_data, date_set, name_set, factor);
 
     $(document).ready(function() {
         var sankey = new Sankey();
