@@ -115,7 +115,7 @@ function set_state(data_set, dates, names, factor) {
   sumTransitions = count_transitions(transitions);
 
   for (k=0; k < sumTransitions.length; k++) {
-    for (m=0; m < 4; m++) {
+    for (m=0; m < 5; m++) {
       result_transition.push([
                   sumTransitions[k].key,
                   sumTransitions[k].values[m].values[0].value.computer_count,
