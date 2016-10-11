@@ -2,7 +2,7 @@
 <html lang='en' xml:lang='en' xmlns='http://www.w3.org/1999/xhtml'>
   <head>
     <meta content='text/html; charset=utf-8' http-equiv='Content-Type' />
-    <title>Sankey Javascript Demo: Spread effort 2050 Pathway</title>
+    <title>Sample Network State Change</title>
     <script src="https://d3js.org/d3.v4.min.js"></script>
     <script src="../ext/raphael.js" type="text/javascript"></script>
     <script src="../ext/jquery.js" type="text/javascript"></script>
@@ -12,11 +12,23 @@
   </head>
   <body>
     <script type='text/javascript'>
-
+/*
     var some_data = d3.json("https://github.com/Epieros/Sankey/blob/master/data/sample_data_adj.json", function(error, json) {
               if (error) return console.warn(error);
               });
+*/
+    var some_data;
+    var xmlhttp = new XMLHttpRequest();
+    var url = "https://github.com/Epieros/Sankey/blob/master/data/sample_data_adj.json";
 
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            some_data = JSON.parse(this.responseText);
+        }
+    };
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+	    
     var label_set = ["Compromised","Cleaned","Clean","Disconnected","Failed"]
     var date_set = set_dates(some_data);
     var name_set = set_names(some_data);
