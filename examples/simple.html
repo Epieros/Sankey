@@ -12,15 +12,15 @@
   </head>
   <body>
     <script type='text/javascript'>
-
+/*
     var some_data = d3.json("https://rawgit.com/Epieros/Sankey/master/data/sample_data_adj.json", function(error, json) {
               if (error) return console.warn(error);
               });
+*/
 
-/*
     var some_data;
     var xmlhttp = new XMLHttpRequest();
-    var url = "https://github.com/Epieros/Sankey/blob/master/data/sample_data_adj.json";
+    var url = "https://rawgit.com/Epieros/Sankey/master/data/sample_data_adj.json";
 
     xmlhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
@@ -29,7 +29,7 @@
     };
     xmlhttp.open("GET", url, true);
     xmlhttp.send();
-*/
+
     console.log(some_data);
     var label_set = ["Compromised","Cleaned","Clean","Disconnected","Failed"]
     var date_set = set_dates(some_data);
