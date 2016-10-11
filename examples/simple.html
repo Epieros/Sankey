@@ -12,32 +12,21 @@
   </head>
   <body>
     <script type='text/javascript'>
-/*
-    var some_data = d3.json("https://rawgit.com/Epieros/Sankey/master/data/sample_data_adj.json", function(error, json) {
+	    
+    d3.json("https://rawgit.com/Epieros/Sankey/master/data/sample_data_adj.json", function(error, json) {
               if (error) return console.warn(error);
-              });
-*/
+              getMyJSON(json);
+            });
 
-    var some_data;
-    var xmlhttp = new XMLHttpRequest();
-    var url = "https://rawgit.com/Epieros/Sankey/master/data/sample_data_adj.json";
+    function getMyJSON(json) {
+      var some_data = json;
+      var label_set = ["Compromised","Cleaned","Clean","Disconnected","Failed"]
+      var date_set = set_dates(some_data);
+      var name_set = set_names(some_data);
+      var factor = 30 //reduces output height 30 = Display 30% of original height
+      var transition_set = set_state(some_data, date_set, name_set, factor);
 
-    xmlhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            some_data = JSON.parse(this.responseText);
-        }
-    };
-    xmlhttp.open("GET", url, true);
-    xmlhttp.send();
-
-    console.log(some_data);
-    var label_set = ["Compromised","Cleaned","Clean","Disconnected","Failed"]
-    var date_set = set_dates(some_data);
-    var name_set = set_names(some_data);
-    var factor = 30 //reduces output height 30 = Display 30% of original height	    
-    var transition_set = set_state(some_data, date_set, name_set, factor);
-
-    $(document).ready(function() {
+      $(document).ready(function() {
         var sankey = new Sankey();
         var labels;
         var dateLen = date_set.length;
@@ -49,12 +38,12 @@
 	    } //end of for j
 	    sankey.stack([i],labels);
         } //end of for i
-        
+
 	sankey.setData(transition_set);
-	    
         sankey.draw();
-  
-    });
+      }); //end of .ready
+    }; //end of getMyJSON
+	    
     </script>
     <h1 style='width:1500px; text-align: center; margin-bottom: 0'>Sample Network State Change</h1>
     <div style='width:1500px; text-align: center; margin-top: 0'>Move your mouse over the diagram to show values</div>
