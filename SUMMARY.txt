@@ -1,0 +1,15 @@
+This Sankey diagram , read from left to right, provides a summary of daily computer scan results, 
+and the summarized flow of individual computers between states, one day to the next. Hovering over 
+a node will highlight the inputs and outputs of that node for the day.
+
+The chart building is handled through the initial sankey.js and supporting files from tamc/sankey. 
+The current fork added data processing through data_prep.js and made some adjustments to simple.html.
+
+Future tasks:
+- Adjust colours to be colour-blind friendly
+- Add labels to indicate dates above each column
+- Change node names
+- Add date range selector, graph height and width adjustors (not currently allowed or hard coded)
+- Provide click through chart from each node showing details regarding the computers in that node (name and found vs quarantined)
+- General code cleanup
+- Improve run time for larger data sets.
